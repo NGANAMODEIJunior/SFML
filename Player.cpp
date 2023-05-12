@@ -1,25 +1,27 @@
 #include "Player.h"
 
-Player::Player(int y, int width, int height) : position(0, y), size(width, height)
-{
+Player::Player(int y, int width, int height) : y(y) {
+	position = sf::Vector2f(0, y);
+	size = sf::Vector2f(width, height);
 	shape.setPosition(position);
 	shape.setSize(size);
 	shape.setFillColor(sf::Color::Green);
 }
 
-void Player::draw(sf::RenderWindow& window)
-{
+Player::~Player() {}
+
+void Player::draw(sf::RenderWindow& window) {
 	position.x = sf::Mouse::getPosition(window).x - size.x / 2;
 	shape.setPosition(position);
 	window.draw(shape);
 }
 
-const sf::Vector2f& Player::getPosition() const
-{
+
+
+sf::Vector2f Player::getPosition() {
 	return position;
 }
 
-const sf::Vector2f& Player::getSize() const
-{
+sf::Vector2f Player::getSize() {
 	return size;
 }
