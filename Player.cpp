@@ -16,8 +16,6 @@ void Player::draw(sf::RenderWindow& window) {
 	window.draw(shape);
 }
 
-
-
 sf::Vector2f Player::getPosition() {
 	return position;
 }
@@ -25,3 +23,9 @@ sf::Vector2f Player::getPosition() {
 sf::Vector2f Player::getSize() {
 	return size;
 }
+
+bool Player::checkCollision(const sf::FloatRect& other) {
+	sf::FloatRect playerBounds = shape.getGlobalBounds();
+	return playerBounds.intersects(other);
+}
+
