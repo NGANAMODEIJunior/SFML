@@ -1,17 +1,24 @@
 #include "Brick.h"
 
 Brick::Brick(int x, int y, int width, int height, int health) :
-	position(x, y), size(width, height), health(health)
+	position(sf::Vector2f(x, y)), size(sf::Vector2f(width, height)), health(health)
 {
-	shape.setSize(size);
+	// Création de la forme rectangulaire représentant la brique
+	shape = sf::RectangleShape(size);
 	shape.setOutlineThickness(2);
 	shape.setOutlineColor(sf::Color::Black);
 	shape.setPosition(position);
 	shape.setFillColor(getColorFromLife());
 }
 
+Brick::~Brick()
+{
+	// Rien à faire dans le destructeur
+}
+
 void Brick::draw(sf::RenderWindow& window)
 {
+	// Dessine la brique si celle-ci est "en vie"
 	if (isAlive()) {
 		window.draw(shape);
 	}
@@ -19,6 +26,7 @@ void Brick::draw(sf::RenderWindow& window)
 
 sf::Color Brick::getColorFromLife()
 {
+	// Renvoie la couleur de la brique en fonction de son état de santé
 	switch (health) {
 	case 1:
 		return sf::Color::Red;
@@ -31,32 +39,42 @@ sf::Color Brick::getColorFromLife()
 	}
 }
 
-bool Brick::isAlive() const
+bool Brick::isAlive()
 {
+	// Renvoie true si health est supérieur à 0, false sinon
 	return health > 0;
 }
 
 void Brick::hit()
 {
-	--health;
+	// Méthode à appeler lorsque la brique est touchée
+	// Décrémente l'attribut health de 1
+	health--;
 	shape.setFillColor(getColorFromLife());
 }
 
-const sf::Vector2f& Brick::getPosition() const
+sf::Vector2f Brick::getPosition()
 {
+	// Accesseur de l'attribut position
 	return position;
 }
 
-const sf::Vector2f& Brick::getSize() const
+sf::Vector2f Brick::getSize()
 {
+	// Accesseur de l'attribut size
 	return size;
+}
+
+sf::RectangleShape Brick::getShape()
+{
+	// Renvoyer la forme de la brique
+	return shape;
 }
 
 void Brick::destroyAndDelete(std::deque<Brick*>& bricks)
 {
-	auto it = std::find(bricks.begin(), bricks.end(), this);
-	if (it != bricks.end()) {
-		bricks.erase(it);
-	}
+	// Retirer la brique de la deque de briques
+	bricks.erase(std::remove(bricks.begin(), bricks.end(), this), bricks.end());
+	// Supprimer l'objet de la mémoire
 	delete this;
 }
