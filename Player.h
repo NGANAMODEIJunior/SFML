@@ -16,4 +16,5 @@ public:
 	void draw(sf::RenderWindow& window);
 	sf::Vector2f getPosition();
 	sf::Vector2f getSize();
+	bool checkCollision(const sf::FloatRect& other);
 };
